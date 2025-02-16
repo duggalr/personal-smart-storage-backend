@@ -11,8 +11,11 @@ const _fetchQuoteFromAPI = require('./utils');
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+    useUnifiedTopology: true
+})
+.then(() => console.log('✅ MongoDB Connected'))
+.catch(err => console.error('❌ MongoDB Connection Error:', err));
+
 
 const QuoteSchema = new mongoose.Schema({
     id: { type: Number, required: true, unique: true },
@@ -20,7 +23,6 @@ const QuoteSchema = new mongoose.Schema({
     author: { type: String, required: true }
 });
 const Quote = mongoose.model('Quote', QuoteSchema);
-// {"id":97,"quote":"The only place where your dream becomes impossible is in your own thinking.","author":"Robert H. Schuller"}%
 
 // Daily Quote Fetcher from Rapid-API
 app.get('/get-daily-quote', async (req, res) => {
@@ -42,6 +44,6 @@ app.get('/get-daily-quote', async (req, res) => {
 
 });
 
-app.listen(
-    5000, () => console.log('Server running on port 5000')
-);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
